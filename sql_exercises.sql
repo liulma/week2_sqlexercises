@@ -58,3 +58,44 @@ SELECT * FROM person;
 DELETE FROM person WHERE id=1;
 
 SELECT * FROM person WHERE id=1;
+
+-- Create new table certificates
+CREATE table certificates (
+    id SERIAL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    person_id int,
+    CONSTRAINT fk_person FOREIGN KEY(person_id) REFERENCES person(id)
+);
+
+-- Add new row to the person table
+INSERT into person (name, age, student) VALUES
+('Linda', 30, FALSE);
+
+SELECT * FROM person;
+
+-- Add a new row to the certificates table by attaching a certificate named Scrum to yourself
+INSERT into certificates (name, person_id) VALUES
+('AWS', 5);
+
+SELECT * FROM certificates;
+
+-- Add Scrum and Azure certificates to others in the person table
+INSERT into certificates (name, person_id) VALUES
+('Scrum', 2),
+('Azure', 3);
+
+SELECT * FROM certificates;
+
+-- Query the person board for all Scrum certificate holders
+SELECT p.id, p.name, age, student
+FROM person p -- Alias person as p
+INNER JOIN certificates c ON p.id = c.person_id
+WHERE c.name = 'Scrum';
+
+-- Query the person board for all Azure certificate holders
+SELECT p.id, p.name, age, student
+FROM person p -- Alias person as p
+INNER JOIN certificates c ON p.id = c.person_id
+WHERE c.name = 'Azure';
+
+-- Download world.sql file and make new database called world, restore the file to your database
